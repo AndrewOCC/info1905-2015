@@ -366,8 +366,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
 	
-<<<<<<< HEAD
-=======
+
 		if(this.isBinary() == false){
 			return false;
 		}
@@ -415,7 +414,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		boolean balanced = isBalancedBinary(this.root());
 		return balanced;
 	}
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
 	//find out if balanced binary tree by comparing height of left and right subtrees
 	public boolean isBalancedBinary(){
@@ -581,15 +579,13 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-<<<<<<< HEAD
-=======
+
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 //											PART III	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 
 	public boolean add(E value){
-<<<<<<< HEAD
+
 		if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
@@ -644,15 +640,12 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
         return false;
 	}
 	
-=======
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
 
 	
-	}
-
+	
 	@Override
 	public boolean remove(E value) {
 		// if v​alue i​s in the balanced BST , remove it and return true
