@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import interfaces.BalancedBST;
 import interfaces.Position;
@@ -88,7 +89,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// This operation should only be performed if the tree is a proper binary tree.
 	// If it is not, then throw an UnsupportedOperationException instead of returning a value
 	// Otherwise, perform the traversal with child 0 on the left, and child 1 on the right.
-	//TO FIX
 	
 	public List<E> inOrder(){
 		if(this.root()==null){
@@ -104,13 +104,23 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if(!isProperBinary()){
 			throw new UnsupportedOperationException();
 		}
+	
+		// create variables to determine if the children exist
+		boolean isLeftChild = false, isRightChild = false;
 		
-    	if(root.getChildren().get(0) != null){
+		if (root.getChildren().size() == 2){
+			isLeftChild = isRightChild = true;
+		}
+		else if (root.getChildren().size() == 1){
+			isLeftChild = true;
+		}
+		
+    	if(isLeftChild == true){
     		list.addAll(inOrder(root.getChildren().get(0)));//get left child
     	}
     	list.add(root.getElement());
     	
-    	if(root.getChildren().get(1) != null){
+    	if(isRightChild == true){
     		list.addAll(inOrder(root.getChildren().get(1)));//get right child
     	}
     	
@@ -553,25 +563,147 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 //											PART IV	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 	
+	// is this tree a valid arithmetic tree
+	// every leaf in an arithmetic tree is a numeric value, for example: “1”, “2.5”, or “­0.234” 
+	// every internal node is a binary operation: “+”, “­”, “*”, “/”
+	// binary operations must act on exactly two sub­expressions (i.e. two children)
+	// note: all the values and operations are stored as String objects
 	
 	@Override
 	public boolean isArithmetic() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		if(this.size() == 0){
+			return false;
+		} else {
+			return isArithmetic(this.root());
+		}
+		
 	}
+		
+	private boolean isArithmetic(Position<E> node){
+		
+		boolean isArithmetic = false;
+		String numberRegEx = "^[-+]?[0-9]*\\.?[0-9]+$";
+		String symbolRegEx = "^(\\+|\\-|\\*|/)$";
+		
+		// All elements must be strings
+		if (node.getElement().getClass() != "".getClass()) {
+			return false;
+		}
+		
+		// All leaves must be numbers
+		if (node.getChildren().size() == 0){
+			if (Pattern.matches(numberRegEx, node.getElement().toString())){
+				return true;
+			}
+		}
+		
+		// Nodes cannot have one child
+		else if (node.getChildren().size() == 1){
+			return false;
+		}
+		
+		else{
+			isArithmetic = Pattern.matches(symbolRegEx, node.getElement().toString());
+			for (int i = 0; i < node.getChildren().size(); i++){
+				isArithmetic = isArithmetic && isArithmetic(node.getChildren().get(i));
+			}
+		
+		}
+		
+		return isArithmetic;
+		
+	}
+	
 
 
 	@Override
 	public double evaluateArithmetic() {
-		// TODO Auto-generated method stub
-		return 0;
+		// Do a post-order traversal of the tree to evaluate pairs of leaves
+		// with their parent operators
+		
+		// evaluate an arithmetic tree to get the solution
+		// if a position is a numeric value, then it has that value
+		// if a position is a binary operation, then apply that operation on the value of it’s children
+		// use floating point maths for all calculations, not integer maths
+		// if a position contains “/”, its left subtree evaluated to 1.0, and the right to 2.0, then it is 0.5
+		
+		
+		// An empty tree results in a zero output
+		if(this.size() == 0){
+			return 0;
+		}
+		else {
+			return evaluateArithmetic(this.root());
+		}
+		
+	}
+	
+	// Helper function for recursive calls
+	private double evaluateArithmetic(Position<E> node) {
+		
+		
+		double x, y;
+		String operator;
+		
+		// Set child variables (note that there must be 0 or two children)
+		Position<E> leftChild = null, rightChild = null;
+		if(node.getChildren().size() != 0){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		} else {
+			return Double.valueOf(node.getElement().toString());
+		}
+		
+		x = evaluateArithmetic(leftChild);
+		y = evaluateArithmetic(rightChild);
+		operator = node.getElement().toString();
+	
+		if (operator == "+"){
+			return x + y;
+		} else if (operator == "-"){
+			return x - y;
+		} else if (operator == "*"){
+			return x * y;
+		} else {	// if operator == "/"
+			return x / y;
+		}
 	}
 
 
 	@Override
 	public String getArithmeticString() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return getArithmeticString(this.root());
+		
+		
+	}
+	
+	private String getArithmeticString(Position<E> node){
+		
+		// Set child variables (note that there must be 0 or two children)
+		Position<E> leftChild = null, rightChild = null;
+		if(node.getChildren().size() != 0){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		}
+		
+		String combinedString = "";
+		
+		// Performs an in-order traversal to print the terms in the correct order
+		if (leftChild != null) {
+			combinedString = combinedString + "(";
+			combinedString = combinedString + getArithmeticString(leftChild);
+		}
+		
+		combinedString = combinedString + (node.getElement().toString());
+		
+		if (rightChild != null){
+			combinedString = combinedString + getArithmeticString(rightChild);
+			combinedString = combinedString + ")";
+		}
+		
+		return combinedString;
 	}
 
 
