@@ -387,8 +387,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// a complete tree is one where:
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
-	
-		if(this.isBinary() == false){
+        if(this.isBinary() == false){
 			return false;
 		}
 		
@@ -434,7 +433,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		}
 		boolean balanced = isBalancedBinary(this.root());
 		return balanced;
-	}
+    }
+
 	
 	//find out if balanced binary tree by comparing height of left and right subtrees
 	public boolean isBalancedBinary(Position<E> node){
@@ -605,7 +605,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 	public boolean add(E value){
-		if(this.root()==null){
+        if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
 		}
@@ -658,11 +658,10 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
         return false;
 	}
-	
-	// if value is already in the balanced BST, do nothing and return false
+
+    // if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
-
 
 	@Override
 	public boolean remove(E value) {
@@ -673,7 +672,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if (this.isEmpty()){
 			return false;		
 		}
-		else if (this.)
+		//else if (this.)
 				
 	}
 	
