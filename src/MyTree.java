@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import interfaces.BalancedBST;
 import interfaces.Position;
@@ -29,6 +30,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 				TreeArithmetic          //PART 4
 {
 
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART I	
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	
 	//constructor
 	public MyTree() {
 		super(); //call the constructor of SimpleTree with no arguments
@@ -99,18 +105,33 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if(!isProperBinary()){
 			throw new UnsupportedOperationException();
 		}
+	
+		// create variables to determine if the children exist
+		boolean isLeftChild = false, isRightChild = false;
 		
-    	if(root.getChildren().get(0) != null){
+		if (root.getChildren().size() == 2){
+			isLeftChild = isRightChild = true;
+		}
+		else if (root.getChildren().size() == 1){
+			isLeftChild = true;
+		}
+		
+    	if(isLeftChild == true){
     		list.addAll(inOrder(root.getChildren().get(0)));//get left child
     	}
     	list.add(root.getElement());
     	
-    	if(root.getChildren().get(1) != null){
+    	if(isRightChild == true){
     		list.addAll(inOrder(root.getChildren().get(1)));//get right child
     	}
     	
     	return list;
 	}
+	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//									PART II	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
 	
 	//Helper function to call recursion
 	public boolean isProperBinary(){
@@ -211,14 +232,109 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
+	
+	
 	// calculate the number of leaves of the tree at exactly depth depth.
 	// the root is at depth 0. The children of the root are at depth 1.
+<<<<<<< HEAD
 	public int numLeaves(int depth); 
+=======
+	public int numLeaves(int depth){
+		
+		// Deal with empty tree
+		if(this.root() == null){
+			return 0;
+		}
+		
+		// Deals with depth parameters outside the possible depths in the tree
+		if(depth > this.height() || depth < 0){
+			return 0;
+		}
+		
+		int leaves = numLeavesDepth(this.root(), depth, 0);
+		return leaves;
+		
+	}
+	
+	// Helper function for numLeaves(int depth)
+	private int numLeavesDepth(Position<E> node, int depth, int currentDepth){
+		
+		int leaves = 0;
+		
+		// If at the requested depth
+		if(currentDepth == depth){
+			if (node.getChildren().size() == 0){
+				leaves ++;
+			} 
+			else {
+				return 0;
+			}
+		} 
+
+		else {
+			if(node.getChildren().size() == 0){
+				return 0;
+			} 
+			else {
+				for(Position<E> i : node.getChildren()){
+					leaves += numLeavesDepth(i, depth, currentDepth+1);
+				}
+			}
+				
+		}
+		return leaves;
+	}
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
 
+<<<<<<< HEAD
 	public int numPositions(int depth); 
+=======
+	public int numPositions(int depth){
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// calculate the number of positions at exactly depth depth.
 	
+		// Deal with empty tree
+		if(this.root() == null){
+			return 0;
+		}
+		
+		// Deals with depth parameters outside the possible depths in the tree
+		if(depth > this.height() || depth < 0){
+			return 0;
+		}
+		
+		int leaves = numPositionsDepth(this.root(), depth, 0);
+		return leaves;
+		
+	}
+	
+	// Helper function for numPositions(int depth)
+	private int numPositionsDepth(Position<E> node, int depth, int currentDepth){
+		
+		int leaves = 0;
+		
+		// If node at the requested depth
+		if(currentDepth == depth){
+			leaves ++; 
+		} 
+		
+		// Otherwise, call recursively on any children
+		else {
+			if(node.getChildren().size() == 0){
+				return 0;
+			} 
+			else {
+				for(Position<E> i : node.getChildren()){
+					leaves += numPositionsDepth(i, depth, currentDepth+1);
+				}
+			}
+				
+		}
+		
+		return leaves;
+	}
+		
 	// is the tree a binary tree?
 	// every position in a binary tree has no more than 2 children
 	public boolean isBinary(){
@@ -243,12 +359,63 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return true;
 	}
 
-	public boolean isCompleteBinary();
+	
+	public boolean isCompleteBinary(){
 	// is the tree complete?
 	// a complete tree is one where:
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
 	
+<<<<<<< HEAD
+=======
+		if(this.isBinary() == false){
+			return false;
+		}
+		
+		if(this.size() == 0){
+			return true;
+		}
+		
+		else {
+			return isCompleteBinary(this.root(), 0);
+		}
+		
+	}
+	
+	// Recursively inspects the array, checking that the current index (using the index
+	// calculations in an array-based binary tree) is not greater than or equal to the
+	// number of items in the tree. If it is, then it cannot be a complete binary tree
+	private boolean isCompleteBinary(Position<E> node, int currentIndex){
+		
+		boolean isComplete = true;
+		boolean isChildComplete = true;
+				
+		if(currentIndex >= this.size()){
+			return false;
+		} else {
+			for (int i = 0; i < node.getChildren().size(); i++){
+				isChildComplete = isCompleteBinary(node.getChildren().get(i), 
+						currentIndex*2+1+i); 
+				isComplete = (isComplete && isChildComplete);
+				
+				//skips further checks once a false value is found
+				if (isComplete == false){
+					break;
+				}
+			}
+			return isComplete;
+		}
+		
+	}
+		
+	public boolean isBalancedBinary(){
+		if(isEmpty()){
+			return isEmpty();
+		}
+		boolean balanced = isBalancedBinary(this.root());
+		return balanced;
+	}
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
 	//find out if balanced binary tree by comparing height of left and right subtrees
 	public boolean isBalancedBinary(){
@@ -287,12 +454,78 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// heights that differ by no more than one.
 	// NOTE: if a node has only one child, the other child is considered to be a subtree of height ­1
 
-	public boolean isHeap(boolean min);
+	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	public boolean isHeap(boolean min){
 	// is the tree a min-heap (if min is True), or is the tree a max-heap (if min is False)
 	// heaps are trees which are both complete and have the heap property:
 	// in a min-heap, the value of a node is less than or equal to the value of each of its children
 	// similarly, in a max-heap the value of a node is greater than or equal to the value of each child
 
+		if(this.size() == 0){
+			return true;
+		}
+		else if (this.isCompleteBinary() == false){
+			return false;
+		}
+		else {
+			return isHeap(this.root(), min);
+		}
+		
+		
+	}
+	
+	// Helper function for Recursion
+	private boolean isHeap(Position<E> node, boolean min){
+		Position<E> leftChild = null, rightChild = null;
+		boolean isHeap = false;	//if none of the below conditions are met, then false will be returned
+		
+		// set child variables
+		if(node.getChildren().size() == 2){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		}
+		// if only one child, must be left child
+		else if(node.getChildren().size() == 1){
+			leftChild = node.getChildren().get(0);
+		} 
+		// an empty tree is a heap
+		else {	
+			return true;
+		}
+		
+		// min-heap
+		if(min == true){
+			if(leftChild.getElement().compareTo(node.getElement()) >= 0){
+				if(rightChild == null){
+					isHeap = isHeap(leftChild, min);		// overrides initial false value for isHeap
+				}
+				else if (rightChild.getElement().compareTo(node.getElement()) >= 0){
+					isHeap = isHeap(leftChild, min);
+					isHeap = isHeap && isHeap(rightChild, min);
+				}
+			}
+		}
+		
+		//max heap
+		else {
+			if(leftChild.getElement().compareTo(node.getElement()) <= 0){
+				if(rightChild == null){
+					isHeap = isHeap(leftChild, min);
+				}
+				else if (rightChild.getElement().compareTo(node.getElement()) <= 0){
+					isHeap = isHeap(leftChild, min);
+					isHeap = isHeap && isHeap(rightChild, min);
+				}
+			}
+		}
+		
+		return isHeap;
+	}
+	
+	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	
 	public boolean isBinarySearchTree();
 	// is the tree a binary search tree?
 	// a binary search tree is a binary tree such that for any node with value v:
@@ -300,8 +533,15 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// - if there is a right child (child 1 is not null), it contains a value strictly greater than v.
 	
 	
+<<<<<<< HEAD
+=======
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART III	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 
 	public boolean add(E value){
+<<<<<<< HEAD
 		if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
@@ -356,8 +596,172 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
         return false;
 	}
 	
+=======
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
+
+	
+	}
+
+	@Override
+	public boolean remove(E value) {
+		// if v​alue i​s in the balanced BST , remove it and return true
+		// otherwise, do nothing and return false
+		// implement the algorithm shown in the week 6 lecture to ensure that the BST remains balanced
+		return false;
+	}
+	
+	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART IV	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	// is this tree a valid arithmetic tree
+	// every leaf in an arithmetic tree is a numeric value, for example: “1”, “2.5”, or “­0.234” 
+	// every internal node is a binary operation: “+”, “­”, “*”, “/”
+	// binary operations must act on exactly two sub­expressions (i.e. two children)
+	// note: all the values and operations are stored as String objects
+	
+	@Override
+	public boolean isArithmetic() {
+		
+		if(this.size() == 0){
+			return false;
+		} else {
+			return isArithmetic(this.root());
+		}
+		
+	}
+		
+	private boolean isArithmetic(Position<E> node){
+		
+		boolean isArithmetic = false;
+		String numberRegEx = "^[-+]?[0-9]*\\.?[0-9]+$";
+		String symbolRegEx = "^(\\+|\\-|\\*|/)$";
+		
+		// All elements must be strings
+		if (node.getElement().getClass() != "".getClass()) {
+			return false;
+		}
+		
+		// All leaves must be numbers
+		if (node.getChildren().size() == 0){
+			if (Pattern.matches(numberRegEx, node.getElement().toString())){
+				return true;
+			}
+		}
+		
+		// Nodes cannot have one child
+		else if (node.getChildren().size() == 1){
+			return false;
+		}
+		
+		else{
+			isArithmetic = Pattern.matches(symbolRegEx, node.getElement().toString());
+			for (int i = 0; i < node.getChildren().size(); i++){
+				isArithmetic = isArithmetic && isArithmetic(node.getChildren().get(i));
+			}
+		
+		}
+		
+		return isArithmetic;
+		
+	}
+	
+
+
+	@Override
+	public double evaluateArithmetic() {
+		// Do a post-order traversal of the tree to evaluate pairs of leaves
+		// with their parent operators
+		
+		// evaluate an arithmetic tree to get the solution
+		// if a position is a numeric value, then it has that value
+		// if a position is a binary operation, then apply that operation on the value of it’s children
+		// use floating point maths for all calculations, not integer maths
+		// if a position contains “/”, its left subtree evaluated to 1.0, and the right to 2.0, then it is 0.5
+		
+		
+		// An empty tree results in a zero output
+		if(this.size() == 0){
+			return 0;
+		}
+		else {
+			return evaluateArithmetic(this.root());
+		}
+		
+	}
+	
+	// Helper function for recursive calls
+	private double evaluateArithmetic(Position<E> node) {
+		
+		
+		double x, y;
+		String operator;
+		
+		// Set child variables (note that there must be 0 or two children)
+		Position<E> leftChild = null, rightChild = null;
+		if(node.getChildren().size() != 0){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		} else {
+			return Double.valueOf(node.getElement().toString());
+		}
+		
+		x = evaluateArithmetic(leftChild);
+		y = evaluateArithmetic(rightChild);
+		operator = node.getElement().toString();
+	
+		if (operator == "+"){
+			return x + y;
+		} else if (operator == "-"){
+			return x - y;
+		} else if (operator == "*"){
+			return x * y;
+		} else {	// if operator == "/"
+			return x / y;
+		}
+	}
+
+
+	@Override
+	public String getArithmeticString() {
+		
+		return getArithmeticString(this.root());
+		
+		
+	}
+	
+	private String getArithmeticString(Position<E> node){
+		
+		// Set child variables (note that there must be 0 or two children)
+		Position<E> leftChild = null, rightChild = null;
+		if(node.getChildren().size() != 0){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		}
+		
+		String combinedString = "";
+		
+		// Performs an in-order traversal to print the terms in the correct order
+		if (leftChild != null) {
+			combinedString = combinedString + "(";
+			combinedString = combinedString + getArithmeticString(leftChild);
+		}
+		
+		combinedString = combinedString + (node.getElement().toString());
+		
+		if (rightChild != null){
+			combinedString = combinedString + getArithmeticString(rightChild);
+			combinedString = combinedString + ")";
+		}
+		
+		return combinedString;
+	}
+
+
+	
 
 }
