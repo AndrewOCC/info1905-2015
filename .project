@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
-	<name>info1905-2015</name>
-=======
 	<name>TreeFunctions</name>
->>>>>>> 05336eee9306788f992c4d495b39f55bec317d19
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
-<<<<<<< HEAD
-	</buildSpec>
-	<natures>
-=======
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -21,6 +13,5 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
->>>>>>> 05336eee9306788f992c4d495b39f55bec317d19
 	</natures>
 </projectDescription>

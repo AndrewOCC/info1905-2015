@@ -12,7 +12,7 @@ import simpletree.SimpleTree;
 
 /**
  * @author krus4334
- * @author acam3311
+ * @author and your partner's unikey, if working in a pair
  * 
  * This class, MyTree, should be your solution to the assignment
  * It should remain in the (default package)
@@ -23,8 +23,8 @@ import simpletree.SimpleTree;
 public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 				TreeTraversals<E>,      //PART 1
 				TreeProperties,         //PART 2
-				//Comparable<Tree<E>>,  //PART 3 (only if enrolled in INFO1105)
-				BalancedBST<E>,       	//PART 3 (only if enrolled in INFO1905)
+				//Comparable<Tree<E>>,    //PART 3 (only if enrolled in INFO1105)
+				BalancedBST<E>,       //PART 3 (only if enrolled in INFO1905)
 				TreeArithmetic          //PART 4
 {
 
