@@ -484,18 +484,18 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		else if(node.getChildren().size() == 1){
 			leftChild = node.getChildren().get(0);
 		} 
-		//if there are no children, can be a heap
+		// an empty tree is a heap
 		else {	
 			return true;
 		}
 		
 		// min-heap
-		if(min = true){
-			if(leftChild.getElement().compareTo(node.getElement()) <= 0){
+		if(min == true){
+			if(leftChild.getElement().compareTo(node.getElement()) >= 0){
 				if(rightChild == null){
 					isHeap = isHeap(leftChild, min);		// overrides initial false value for isHeap
 				}
-				else if (rightChild.getElement().compareTo(node.getElement()) <= 0){
+				else if (rightChild.getElement().compareTo(node.getElement()) >= 0){
 					isHeap = isHeap(leftChild, min);
 					isHeap = isHeap && isHeap(rightChild, min);
 				}
@@ -504,11 +504,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 		//max heap
 		else {
-			if(leftChild.getElement().compareTo(node.getElement()) >= 0){
+			if(leftChild.getElement().compareTo(node.getElement()) <= 0){
 				if(rightChild == null){
 					isHeap = isHeap(leftChild, min);
 				}
-				else if (rightChild.getElement().compareTo(node.getElement()) >= 0){
+				else if (rightChild.getElement().compareTo(node.getElement()) <= 0){
 					isHeap = isHeap(leftChild, min);
 					isHeap = isHeap && isHeap(rightChild, min);
 				}

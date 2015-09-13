@@ -157,5 +157,5 @@ public class TreePropertiesTest {
 		assertFalse(treePathAbc.isBinarySearchTree());
 		
 	}
-
+	
 }
