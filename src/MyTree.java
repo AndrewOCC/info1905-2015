@@ -28,6 +28,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 				TreeArithmetic          //PART 4
 {
 
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART I	
+//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	
 	//constructor
 	public MyTree() {
 		super(); //call the constructor of SimpleTree with no arguments
@@ -111,6 +116,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
     	
     	return list;
 	}
+	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//									PART II	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
 	
 	//Helper function to call recursion
 	public boolean isProperBinary(){
@@ -201,7 +211,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return leaves;
 	}
 	
-	public int numLeaves(Position<E> node, int leaves){
+	private int numLeaves(Position<E> node, int leaves){
 		if(node.getChildren().size()==0){
 			leaves++;
 		}
@@ -214,14 +224,101 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
+	
+	
 	// calculate the number of leaves of the tree at exactly depth depth.
 	// the root is at depth 0. The children of the root are at depth 1.
-	public int numLeaves(int depth); //TO DO
+	public int numLeaves(int depth){
+		
+		// Deal with empty tree
+		if(this.root() == null){
+			return 0;
+		}
+		
+		// Deals with depth parameters outside the possible depths in the tree
+		if(depth > this.height() || depth < 0){
+			return 0;
+		}
+		
+		int leaves = numLeavesDepth(this.root(), depth, 0);
+		return leaves;
+		
+	}
+	
+	// Helper function for numLeaves(int depth)
+	private int numLeavesDepth(Position<E> node, int depth, int currentDepth){
+		
+		int leaves = 0;
+		
+		// If at the requested depth
+		if(currentDepth == depth){
+			if (node.getChildren().size() == 0){
+				leaves ++;
+			} 
+			else {
+				return 0;
+			}
+		} 
+
+		else {
+			if(node.getChildren().size() == 0){
+				return 0;
+			} 
+			else {
+				for(Position<E> i : node.getChildren()){
+					leaves += numLeavesDepth(i, depth, currentDepth+1);
+				}
+			}
+				
+		}
+		return leaves;
+	}
 	
 
-	public int numPositions(int depth); 
-	// calculate the number of positions at exactly depth depth. TO DO!!!!!
+	public int numPositions(int depth){
+	// calculate the number of positions at exactly depth depth.
 	
+		// Deal with empty tree
+		if(this.root() == null){
+			return 0;
+		}
+		
+		// Deals with depth parameters outside the possible depths in the tree
+		if(depth > this.height() || depth < 0){
+			return 0;
+		}
+		
+		int leaves = numPositionsDepth(this.root(), depth, 0);
+		return leaves;
+		
+	}
+	
+	// Helper function for numPositions(int depth)
+	private int numPositionsDepth(Position<E> node, int depth, int currentDepth){
+		
+		int leaves = 0;
+		
+		// If node at the requested depth
+		if(currentDepth == depth){
+			leaves ++; 
+		} 
+		
+		// Otherwise, call recursively on any children
+		else {
+			if(node.getChildren().size() == 0){
+				return 0;
+			} 
+			else {
+				for(Position<E> i : node.getChildren()){
+					leaves += numPositionsDepth(i, depth, currentDepth+1);
+				}
+			}
+				
+		}
+		
+		return leaves;
+	}
+		
 	// is the tree a binary tree?
 	// every position in a binary tree has no more than 2 children
 	public boolean isBinary(){
@@ -246,12 +343,53 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return true;
 	}
 
-	public boolean isCompleteBinary();
+	
+	public boolean isCompleteBinary(){
 	// is the tree complete?
 	// a complete tree is one where:
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
 	
+		if(this.isBinary() == false){
+			return false;
+		}
+		
+		if(this.size() == 0){
+			return true;
+		}
+		
+		else {
+			return isCompleteBinary(this.root(), 0);
+		}
+		
+	}
+	
+	// Recursively inspects the array, checking that the current index (using the index
+	// calculations in an array-based binary tree) is not greater than or equal to the
+	// number of items in the tree. If it is, then it cannot be a complete binary tree
+	private boolean isCompleteBinary(Position<E> node, int currentIndex){
+		
+		boolean isComplete = true;
+		boolean isChildComplete = true;
+				
+		if(currentIndex >= this.size()){
+			return false;
+		} else {
+			for (int i = 0; i < node.getChildren().size(); i++){
+				isChildComplete = isCompleteBinary(node.getChildren().get(i), 
+						currentIndex*2+1+i); 
+				isComplete = (isComplete && isChildComplete);
+				
+				//skips further checks once a false value is found
+				if (isComplete == false){
+					break;
+				}
+			}
+			return isComplete;
+		}
+		
+	}
+		
 	public boolean isBalancedBinary(){
 		if(isEmpty()){
 			return isEmpty();
@@ -311,22 +449,132 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// heights that differ by no more than one.
 	// NOTE: if a node has only one child, the other child is considered to be a subtree of height ­1
 
-	public boolean isHeap(boolean min);
+	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	public boolean isHeap(boolean min){
 	// is the tree a min-heap (if min is True), or is the tree a max-heap (if min is False)
 	// heaps are trees which are both complete and have the heap property:
 	// in a min-heap, the value of a node is less than or equal to the value of each of its children
 	// similarly, in a max-heap the value of a node is greater than or equal to the value of each child
 
+		if(this.size() == 0){
+			return true;
+		}
+		else if (this.isCompleteBinary() == false){
+			return false;
+		}
+		else {
+			return isHeap(this.root(), min);
+		}
+		
+		
+	}
+	
+	// Helper function for Recursion
+	private boolean isHeap(Position<E> node, boolean min){
+		Position<E> leftChild = null, rightChild = null;
+		boolean isHeap = false;	//if none of the below conditions are met, then false will be returned
+		
+		// set child variables
+		if(node.getChildren().size() == 2){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		}
+		// if only one child, must be left child
+		else if(node.getChildren().size() == 1){
+			leftChild = node.getChildren().get(0);
+		} 
+		//if there are no children, can be a heap
+		else {	
+			return true;
+		}
+		
+		// min-heap
+		if(min = true){
+			if(leftChild.getElement().compareTo(node.getElement()) <= 0){
+				if(rightChild == null){
+					isHeap = isHeap(leftChild, min);		// overrides initial false value for isHeap
+				}
+				else if (rightChild.getElement().compareTo(node.getElement()) <= 0){
+					isHeap = isHeap(leftChild, min);
+					isHeap = isHeap && isHeap(rightChild, min);
+				}
+			}
+		}
+		
+		//max heap
+		else {
+			if(leftChild.getElement().compareTo(node.getElement()) >= 0){
+				if(rightChild == null){
+					isHeap = isHeap(leftChild, min);
+				}
+				else if (rightChild.getElement().compareTo(node.getElement()) >= 0){
+					isHeap = isHeap(leftChild, min);
+					isHeap = isHeap && isHeap(rightChild, min);
+				}
+			}
+		}
+		
+		return isHeap;
+	}
+	
+	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	
 	public boolean isBinarySearchTree();
 	// is the tree a binary search tree?
 	// a binary search tree is a binary tree such that for any node with value v:
 	// - if there is a left child (child 0 is not null), it contains a value strictly less than v.
 	// - if there is a right child (child 1 is not null), it contains a value strictly greater than v.
 	
+	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART III	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-	public boolean add(E value);
+	public boolean add(E value){
 	// if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
+
+	
+	}
+
+	@Override
+	public boolean remove(E value) {
+		// if v​alue i​s in the balanced BST , remove it and return true
+		// otherwise, do nothing and return false
+		// implement the algorithm shown in the week 6 lecture to ensure that the BST remains balanced
+		return false;
+	}
+	
+	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//											PART IV	
+//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+	
+	
+	@Override
+	public boolean isArithmetic() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public double evaluateArithmetic() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public String getArithmeticString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	
 
 }
