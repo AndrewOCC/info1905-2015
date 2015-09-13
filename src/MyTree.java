@@ -251,10 +251,65 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// a complete tree is one where:
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
+	
+	public boolean isBalancedBinary(){
+		if(isEmpty()){
+			return isEmpty();
+		}
+		boolean balanced = isBalancedBinary(this.root());
+		return balanced;
+	}
+	
+	public boolean isBalancedBinary(Position<E> root){
+		int leftHeight, rightHeight=0;
+		if(this.root().getChildren().size()==1){ //you know there is only a left tree
+			leftHeight = height(this.root().getChildren().get(0));
+		}
+		
+		else{
+			
+			leftHeight= height(this.root().getChildren().get(0));
+			rightHeight = height(this.root().getChildren().get(1));
+		}
+		if(leftHeight-rightHeight>1 || leftHeight-rightHeight<0){
+			return false;
+		}
+		return true;
+	}
+	/*public boolean isBalancedBinary(){
+		int leftSub, rightSub;
+		if(isEmpty()){
+			return isEmpty();
+		}
+		if(!isBinary()){
+			return false;
+		}
 
-	public boolean isBalancedBinary();
-	// is the tree balanced?
-	// a balanced tree is one where the depth of any two leaves differs by no more than one.
+		if(this.root().getChildren().size()>0){
+			if(this.root().getChildren().get(0)!=null){
+				leftSub = height(this.root().getChildren().get(0));
+			}
+			else{
+				leftSub = 0;
+			}
+			if(this.root().getChildren().get(1)==null){
+				rightSub = 0;
+			}
+			else{
+				rightSub = height(this.root().getChildren().get(1));
+			}
+			if(leftSub-rightSub>1 || leftSub-rightSub<0){
+				return false;
+				}
+		}
+		return true;	
+	}*/
+	
+	// is the tree a balanced binary tree?
+	// a balanced tree is one where for every position in the tree, the
+	// subtrees rooted at each of the children of the that position have
+	// heights that differ by no more than one.
+	// NOTE: if a node has only one child, the other child is considered to be a subtree of height ­1
 
 	public boolean isHeap(boolean min);
 	// is the tree a min-heap (if min is True), or is the tree a max-heap (if min is False)
@@ -269,16 +324,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// - if there is a right child (child 1 is not null), it contains a value strictly greater than v.
 	
 
-	@Override
-	public int compareTo(Tree<E> other) {
-		//TODO: implement this method if enrolled in INFO1105
-		// compare the tree with another tree
-		// check the structure and values of the trees:
-		// a) Check the positions left-to-right, top to bottom (i.e. root, then depth 1, then depth 2, etc.)
-		// b) If this tree has a position that the other tree does not, return 1.
-		// c) If the other tree has a position that this one does not, return -1.
-		// d) If the position is in both trees, then compare the values (return if the difference is not 0)
-		return 0;
-	}
+	public boolean add(E value);
+	// if value is already in the balanced BST, do nothing and return false
+	// otherwise, add value to the balanced binary search tree (BST) and return true
+	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
 
 }
