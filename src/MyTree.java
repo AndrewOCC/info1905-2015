@@ -4,7 +4,6 @@ import java.util.regex.Pattern;
 
 import interfaces.BalancedBST;
 import interfaces.Position;
-import interfaces.Tree;
 import interfaces.TreeArithmetic;
 import interfaces.TreeProperties;
 import interfaces.TreeTraversals;
@@ -140,8 +139,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		}
 		boolean isProper = isProperBinary(this.root());
 		return isProper;
-		
 	}
+	
 	// is the tree a proper binary tree?
 	// every position in a proper binary tree has either zero or two children
 	private boolean isProperBinary(Position<E> root){
@@ -158,30 +157,40 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return true;	
 	}
 	
+	
 	// calculate the height of the tree (the maximum depth of any position in the tree.)
 	// a tree with only one position has height 0.
 	// a tree where the root has children, but no grandchildren has height 1.
 	// a tree where the root has grandchildren, but no great-grandchildren has height 2.
 	
 	public int height(){
-		if(this.root()==null){
+		
+		if (this.isEmpty()){
 			return -1;
 		}
-		int height = height(this.root());
-		return height;
+		
+		return height(this.root());
+		
 	}
 	
+	// Helper function for recursive calls
 	private int height(Position<E> root){
 		int height = 0;
+		
+		// Finds maximum height of children
 		for(Position<E> i : root.getChildren()){
-			height = 1+height(i);
+			int childHeight = height(i);
+			
+			if (1+childHeight > height){
+				height = 1 + childHeight;
+			}
+			
 		}
 		return height;
 		
 	}
 	
 	
-	//we can use this.root to get the root!!!!!! do something if it's empty? FIX
 	
 	// calculate the height of the tree, but do not descend deeper than �depth� edges into the tree
 	// do not visit any nodes deeper than maxDepth while calculating this
@@ -192,33 +201,53 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if(isEmpty()){
 			return -1;
 		}
+		
+		// Deals with depth parameters outside the possible depths in the tree
+		if(maxDepth < 0){
+			return 0;
+		}
+		
 		int height = height(maxDepth, 0, this.root());
 		return height;
 	}
+	
+	// Helper function for recursive calls
 	private int height(int maxDepth, int height, Position<E> root){
-
+		
+		int maxHeight = 0;
+		
 		if(height == maxDepth){
-			return height;
+			return 0;
 		}
+		
 		else if(height<maxDepth){
 			for(Position<E> i : root.getChildren()){
-				height++;
-				height = height(maxDepth, height, i);
+				int childHeight = height(maxDepth, height + 1, i);
+				
+				//find maximum height from children
+				if (1 + childHeight > maxHeight){
+					maxHeight = 1 + childHeight;
+				}
 			}
 		}
-		return height;	
+		return maxHeight;	
 	}
 	
+	
+	
+	
 	// calculate the number of leaves of the tree (positions with no children)
-	public int numLeaves(){ //helper function for recursion call
+	public int numLeaves(){
 		//deal with empty tree
 		if(this.root() == null){
 			return 0;
 		}
+		
 		int leaves = numLeaves(this.root(), 0);
 		return leaves;
 	}
 	
+	//helper function for recursion call
 	private int numLeaves(Position<E> node, int leaves){
 		if(node.getChildren().size()==0){
 			leaves++;
@@ -234,11 +263,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-	// calculate the number of leaves of the tree at exactly depth depth.
+	// calculate the number of leaves of the tree at exactly *depth* depth.
 	// the root is at depth 0. The children of the root are at depth 1.
-<<<<<<< HEAD
-	public int numLeaves(int depth); 
-=======
+
 	public int numLeaves(int depth){
 		
 		// Deal with empty tree
@@ -256,7 +283,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
-	// Helper function for numLeaves(int depth)
+	// Helper function for recursive call
 	private int numLeavesDepth(Position<E> node, int depth, int currentDepth){
 		
 		int leaves = 0;
@@ -284,14 +311,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		}
 		return leaves;
 	}
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
-
-<<<<<<< HEAD
-	public int numPositions(int depth); 
-=======
+	
 	public int numPositions(int depth){
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// calculate the number of positions at exactly depth depth.
 	
 		// Deal with empty tree
@@ -366,8 +388,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
 	
-<<<<<<< HEAD
-=======
 		if(this.isBinary() == false){
 			return false;
 		}
@@ -415,27 +435,25 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		boolean balanced = isBalancedBinary(this.root());
 		return balanced;
 	}
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
 	//find out if balanced binary tree by comparing height of left and right subtrees
-	public boolean isBalancedBinary(){
+	public boolean isBalancedBinary(Position<E> node){
 		int leftSub, rightSub;
-		if(isEmpty()){
+		if(this.isEmpty()){
 			return isEmpty();
 		}
 		if(!isBinary()){
 			return false;
 		}
-		if(this.root().getChildren().size()>0){
-			if(this.root().getChildren().size()>=1){
-				leftSub = 1 + height(this.root().getChildren().get(0)); //+1 to account for root
-				System.out.println(leftSub + "left");
+		if(node.getChildren().size()>0){
+			if(node.getChildren().size()>=1){
+				leftSub = 1 + height(node.getChildren().get(0)); //+1 to account for root
 			}
 			else{
 				leftSub = 0;
 			}
-			if(this.root().getChildren().size()>1){
-				rightSub = 1 + height(this.root().getChildren().get(1)); //+1 to account for root
+			if(node.getChildren().size()>1){
+				rightSub = 1 + height(node.getChildren().get(1)); //+1 to account for root
 			}
 			else{
 				rightSub = 0;
@@ -581,15 +599,12 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-<<<<<<< HEAD
-=======
+
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 //											PART III	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 
 	public boolean add(E value){
-<<<<<<< HEAD
 		if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
@@ -644,22 +659,25 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
         return false;
 	}
 	
-=======
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
 
-	
-	}
 
 	@Override
 	public boolean remove(E value) {
 		// if v​alue i​s in the balanced BST , remove it and return true
 		// otherwise, do nothing and return false
 		// implement the algorithm shown in the week 6 lecture to ensure that the BST remains balanced
-		return false;
+		
+		if (this.isEmpty()){
+			return false;		
+		}
+		else if (this.)
+				
 	}
+	
+	// Helper Function for recursive calls
 	
 	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -745,6 +763,10 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// Helper function for recursive calls
 	private double evaluateArithmetic(Position<E> node) {
 		
+		// All elements must be strings
+		if (node.getElement().getClass() != "".getClass()) {
+			return 0;
+		}
 		
 		double x, y;
 		String operator;
@@ -779,10 +801,14 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 		return getArithmeticString(this.root());
 		
-		
 	}
 	
 	private String getArithmeticString(Position<E> node){
+		
+		// All elements must be strings
+		if (node.getElement().getClass() != "".getClass()) {
+			return "";
+		}
 		
 		// Set child variables (note that there must be 0 or two children)
 		Position<E> leftChild = null, rightChild = null;
