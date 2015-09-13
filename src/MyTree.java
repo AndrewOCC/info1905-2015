@@ -9,6 +9,7 @@ import interfaces.TreeArithmetic;
 import interfaces.TreeProperties;
 import interfaces.TreeTraversals;
 import simpletree.SimpleTree;
+import simpletree.SimplePosition;
 
 
 /**
@@ -49,7 +50,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return list;
 	}
 	
-	public List<E> preOrder(Position<E> root){
+	private List<E> preOrder(Position<E> root){
 		List<E> list = new ArrayList<E>();
 		
         list.add(root.getElement());
@@ -71,7 +72,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return list;
 	}
 	
-	public List<E> postOrder(Position<E> root){
+	private List<E> postOrder(Position<E> root){
 		List<E> list = new ArrayList<E>();
         
         if (root.getChildren() != null){
@@ -98,7 +99,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return list;
 	}
 	
-	public List<E> inOrder(Position<E> root){
+	private List<E> inOrder(Position<E> root){
 		List<E> list = new ArrayList<E>();
 		
 		if(!isProperBinary()){
@@ -143,7 +144,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	}
 	// is the tree a proper binary tree?
 	// every position in a proper binary tree has either zero or two children
-	public boolean isProperBinary(Position<E> root){
+	private boolean isProperBinary(Position<E> root){
 		if (root.getChildren() != null){
 			for(Position<E> i:root.getChildren()){
 	        	if(root.getChildren().size()!=2 && root.getChildren().size()!=0){
@@ -170,10 +171,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return height;
 	}
 	
-	public int height(Position<E> root){
+	private int height(Position<E> root){
 		int height = 0;
 		for(Position<E> i : root.getChildren()){
-			//System.out.println(height + "normal height");
 			height = 1+height(i);
 		}
 		return height;
@@ -195,7 +195,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		int height = height(maxDepth, 0, this.root());
 		return height;
 	}
-	public int height(int maxDepth, int height, Position<E> root){
+	private int height(int maxDepth, int height, Position<E> root){
 
 		if(height == maxDepth){
 			return height;
@@ -203,11 +203,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		else if(height<maxDepth){
 			for(Position<E> i : root.getChildren()){
 				height++;
-				//System.out.println(1+height(maxDepth,height, i));
 				height = height(maxDepth, height, i);
 			}
 		}
-		//System.out.println(height);
 		return height;	
 	}
 	
@@ -238,6 +236,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	// calculate the number of leaves of the tree at exactly depth depth.
 	// the root is at depth 0. The children of the root are at depth 1.
+<<<<<<< HEAD
+	public int numLeaves(int depth); 
+=======
 	public int numLeaves(int depth){
 		
 		// Deal with empty tree
@@ -283,9 +284,14 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		}
 		return leaves;
 	}
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
 
+<<<<<<< HEAD
+	public int numPositions(int depth); 
+=======
 	public int numPositions(int depth){
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// calculate the number of positions at exactly depth depth.
 	
 		// Deal with empty tree
@@ -360,6 +366,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	// 1) all the levels except the last must be full 
 	// 2) all leaves in the last level are filled from left to right (no gaps)
 	
+<<<<<<< HEAD
+=======
 		if(this.isBinary() == false){
 			return false;
 		}
@@ -407,24 +415,10 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		boolean balanced = isBalancedBinary(this.root());
 		return balanced;
 	}
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	
-	public boolean isBalancedBinary(Position<E> root){
-		int leftHeight, rightHeight=0;
-		if(this.root().getChildren().size()==1){ //you know there is only a left tree
-			leftHeight = height(this.root().getChildren().get(0));
-		}
-		
-		else{
-			
-			leftHeight= height(this.root().getChildren().get(0));
-			rightHeight = height(this.root().getChildren().get(1));
-		}
-		if(leftHeight-rightHeight>1 || leftHeight-rightHeight<0){
-			return false;
-		}
-		return true;
-	}
-	/*public boolean isBalancedBinary(){
+	//find out if balanced binary tree by comparing height of left and right subtrees
+	public boolean isBalancedBinary(){
 		int leftSub, rightSub;
 		if(isEmpty()){
 			return isEmpty();
@@ -432,26 +426,27 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if(!isBinary()){
 			return false;
 		}
-
 		if(this.root().getChildren().size()>0){
-			if(this.root().getChildren().get(0)!=null){
-				leftSub = height(this.root().getChildren().get(0));
+			if(this.root().getChildren().size()>=1){
+				leftSub = 1 + height(this.root().getChildren().get(0)); //+1 to account for root
+				System.out.println(leftSub + "left");
 			}
 			else{
 				leftSub = 0;
 			}
-			if(this.root().getChildren().get(1)==null){
-				rightSub = 0;
+			if(this.root().getChildren().size()>1){
+				rightSub = 1 + height(this.root().getChildren().get(1)); //+1 to account for root
 			}
 			else{
-				rightSub = height(this.root().getChildren().get(1));
+				rightSub = 0;
 			}
-			if(leftSub-rightSub>1 || leftSub-rightSub<0){
+			//Find the difference in the heights
+			if(Math.abs(leftSub-rightSub)>1){
 				return false;
-				}
+			}
 		}
 		return true;	
-	}*/
+	}
 	
 	// is the tree a balanced binary tree?
 	// a balanced tree is one where for every position in the tree, the
@@ -586,11 +581,71 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
+<<<<<<< HEAD
+=======
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 //											PART III	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 
 	public boolean add(E value){
+<<<<<<< HEAD
+		if(this.root()==null){
+			this.setRoot(new SimplePosition<E>(value));
+			return true;
+		}
+		boolean insert = add(value, this.root());
+		return insert;
+	}
+	
+	public boolean add(E value, Position<E> node){
+		Position<E> left=null, right=null;
+		
+		if(node.getChildren().size()==0){
+			if(value.compareTo(node.getElement())<0){
+				this.insert(node, new SimplePosition<E>(value));
+				this.insert(node, new SimplePosition<E>(null));
+			}
+			else{
+				this.insert(node, new SimplePosition<E>(null));
+				this.insert(node, new SimplePosition<E>(value));
+			}		
+		}
+		
+		//get left and right children if they exist
+		if(node.getChildren().size()==1){
+			left = node.getChildren().get(0);
+			right = null;
+		}
+		else if(node.getChildren().size()==2){
+			left = node.getChildren().get(0);
+			right = node.getChildren().get(1);
+		}
+		
+	
+		if(value.compareTo(node.getElement())<0){//when value less than current
+			if(left == null){
+				this.insert(node, new SimplePosition<E>(value));
+				return true;
+			}
+			add(value, left);
+		}
+		else if(node!=null && value.compareTo(node.getElement())>0){//when value greater than current
+			if(right == null){
+				this.insert(node, new SimplePosition<E>(value));
+				return true;
+			}
+			add(value, right);
+		}
+		else{ //if current is equal to value
+			return false;
+		}
+		
+        return false;
+	}
+	
+=======
+>>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
 	// if value is already in the balanced BST, do nothing and return false
 	// otherwise, add value to the balanced binary search tree (BST) and return true
 	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
