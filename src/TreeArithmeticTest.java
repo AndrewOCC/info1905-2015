@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class TreeArithmeticTest {
 
-	@Test //(timeout=1000)
+	@Test (timeout=1000)
 	public void testIsArithmetic() {
 		
 		MyTree<String> tree = new MyTree<String>();

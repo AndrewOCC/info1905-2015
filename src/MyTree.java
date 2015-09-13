@@ -13,7 +13,7 @@ import simpletree.SimpleTree;
 
 /**
  * @author krus4334
- * @author and your partner's unikey, if working in a pair
+ * @author acam3311
  * 
  * This class, MyTree, should be your solution to the assignment
  * It should remain in the (default package)
@@ -531,11 +531,59 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 	
 	
-	public boolean isBinarySearchTree();
+	public boolean isBinarySearchTree(){
 	// is the tree a binary search tree?
 	// a binary search tree is a binary tree such that for any node with value v:
 	// - if there is a left child (child 0 is not null), it contains a value strictly less than v.
 	// - if there is a right child (child 1 is not null), it contains a value strictly greater than v.
+	// if there is only one child, you may assume that is a left child.
+		if(this.size() == 0){
+			return true;
+		}
+		
+		else {
+			return isBinarySearchTree(this.root());
+		}
+		
+	}
+	
+	// Helper function for recursive calls
+	private boolean isBinarySearchTree(Position<E> node){
+		
+		Position<E> leftChild = null, rightChild = null;
+		boolean isBinarySearchTree = false;	//if none of the below conditions are met, then false will be returned
+		
+		// set child variables
+		if(node.getChildren().size() == 2){
+			leftChild = node.getChildren().get(0);
+			rightChild = node.getChildren().get(1);
+		}
+		// if only one child, must be left child
+		else if(node.getChildren().size() == 1){
+			leftChild = node.getChildren().get(0);
+		} 
+		
+		// an empty tree is a binary search tree
+		else {	
+			return true;
+		}
+		
+		// Check children's values
+		if(leftChild.getElement().compareTo(node.getElement()) <= 0){
+			if(rightChild == null){
+				isBinarySearchTree = isBinarySearchTree(leftChild);
+			}
+			else if (rightChild.getElement().compareTo(node.getElement()) >= 0){
+				isBinarySearchTree = isBinarySearchTree(leftChild);
+				isBinarySearchTree = isBinarySearchTree && isBinarySearchTree(rightChild);
+			}
+		}
+	
+		
+		return isBinarySearchTree;
+		
+	}
+	
 	
 	
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

@@ -72,5 +72,5 @@ public class TreeComparisonTest {
     	assertEquals("d".compareTo("a"), treeD.compareTo(treeA));
 		
 	}
-
+	
 }
