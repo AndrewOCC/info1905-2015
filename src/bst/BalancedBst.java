@@ -30,9 +30,12 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 	 * these methods are called.
 	 * 
 	 */
-
+	public boolean add(E value){
+		return true;
+	}
+	
 	@Override
-	public boolean insert(E value) {
+	/*public boolean insert(E value) {
 		// if value is already in the balanced BST, do nothing and return false
 		// otherwise, add value to the balanced binary search tree (BST) and return true
 		// use the algorithm shown in the week 6 lecture - the BST must remain balanced
@@ -181,7 +184,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			}
 		}
 	}
-
+	*/
 	@Override
 	public boolean remove(E value) {
 		// if value is in the balanced BST, remove it and return true

@@ -24,14 +24,14 @@ import simpletree.SimplePosition;
 public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 				TreeTraversals<E>,      //PART 1
 				TreeProperties,         //PART 2
-				//Comparable<Tree<E>>,    //PART 3 (only if enrolled in INFO1105)
+				//Comparable<Tree<E>>,	//PART 3 (only if enrolled in INFO1105)
 				BalancedBST<E>,       //PART 3 (only if enrolled in INFO1905)
 				TreeArithmetic          //PART 4
 {
 
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //											PART I	
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 	
 	
 	//constructor
@@ -127,9 +127,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
     	return list;
 	}
 	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //									PART II	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 	
 	
 	//Helper function to call recursion
@@ -601,7 +601,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	public boolean add(E value){
         boolean add = insert(value, this.root());
         if(!this.isBalancedBinary()){
-        	returnTrinodes(this.root());
+        	//returnTrinodes(this.root());
         }
         return add;  
 	}
