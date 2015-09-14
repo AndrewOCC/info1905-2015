@@ -35,7 +35,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 	}
 	
 	@Override
-	/*public boolean insert(E value) {
+	public boolean insert(E value) {
 		// if value is already in the balanced BST, do nothing and return false
 		// otherwise, add value to the balanced binary search tree (BST) and return true
 		// use the algorithm shown in the week 6 lecture - the BST must remain balanced
@@ -130,14 +130,16 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		
 		//get left and right children if they exist
 		BstPosition<E> left=null, right=null;
-		BstPosition<E> valuePos = null;
 		left = node.getLeft();
 		right = node.getRight();
+		
+		// Create node holding the value
+		SimpleBstPosition<E> valueNode = new SimpleBstPosition<E>(value);
 		
 		
 		//Set the value as the root if the tree is empty
 		if(this.root()==null){
-			this.setRoot(new SimpleBstPosition<E>(value));
+			this.setRoot(valueNode);
 			return true;
 		}
 		while(true){
@@ -145,14 +147,14 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			if(left == null && right == null){
 				//If the value is smaller than current, insert to the left
 				if(value.compareTo(node.getElement())<0){
-					this.insert(value, node);
-					this.insert(null, node);
+					this.setLeft(valueNode);
+					this.setRight(null);
 					return true;
 				}
 				//If the value is larger than current, insert to the right
 				else if(value.compareTo(node.getElement())>0){
-					this.setLeft(null, node);
-					this.setRight(new SimpleBstPosition<E>(value), node);
+					this.setLeft(null);
+					this.setRight(valueNode);
 					return true;
 				}		
 			}
@@ -161,7 +163,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			//Insert new node to the left if smaller than current
 			if(value.compareTo(node.getElement())<0){
 				if(left == null){
-					this.setLeft(value);
+					this.setLeft(valueNode);
 					return true;
 				}
 				node = left;	
@@ -171,7 +173,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			//Insert new node to the right if value greater than current
 			else if(value.compareTo(node.getElement())>0){
 				if(right == null){
-					this.setRight(value);
+					this.setRight(valueNode);
 					return true;
 				}
 				node = right;
@@ -183,7 +185,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			}
 		}
 	}
-	*/
+	
 	@Override
 	public boolean remove(E value) {
 		// if value is in the balanced BST, remove it and return true

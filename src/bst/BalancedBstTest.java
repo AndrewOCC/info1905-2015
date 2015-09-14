@@ -41,14 +41,14 @@ public class BalancedBstTest {
     	//== Object Tree Test ==
 		
 		//Adding existing values
-		assertEquals(false, tree.add(10));
-		assertEquals(false, tree.add(70));
+		assertEquals(false, tree.insert(10));
+		assertEquals(false, tree.insert(70));
 		//Normal adding of values
-		assertEquals(true, tree.add(48));
-		assertEquals(true, tree.add(100));
-		assertEquals(true, tree.add(5));
-		assertEquals(true, tree.add(3));
-		assertEquals(true, tree.add(1));
+		assertEquals(true, tree.insert(48));
+		assertEquals(true, tree.insert(100));
+		assertEquals(true, tree.insert(5));
+		assertEquals(true, tree.insert(3));
+		assertEquals(true, tree.insert(1));
 		
 		//Check the tree is still balanced
 		assertEquals(true, tree.isBalancedBinary());
@@ -67,13 +67,13 @@ public class BalancedBstTest {
 	@Test
 	public void testRemove(){
 		BinarySearchTree<Integer> tree = new SimpleBst<Integer>();
-		BstPosition<Integer> a = new SimpleBstPosition<>(79);
-		BstPosition<Integer> b = new SimpleBstPosition<>(12);
-		BstPosition<Integer> c = new SimpleBstPosition<>(60);
-		BstPosition<Integer> d = new SimpleBstPosition<>(9);
-		BstPosition<Integer> e = new SimpleBstPosition<>(18);
-		BstPosition<Integer> f = new SimpleBstPosition<>(49);
-		BstPosition<Integer> g = new SimpleBstPosition<>(116);
+		SimpleBstPosition<Integer> a = new SimpleBstPosition<>(79);
+		SimpleBstPosition<Integer> b = new SimpleBstPosition<>(12);
+		SimpleBstPosition<Integer> c = new SimpleBstPosition<>(60);
+		SimpleBstPosition<Integer> d = new SimpleBstPosition<>(9);
+		SimpleBstPosition<Integer> e = new SimpleBstPosition<>(18);
+		SimpleBstPosition<Integer> f = new SimpleBstPosition<>(49);
+		SimpleBstPosition<Integer> g = new SimpleBstPosition<>(116);
 		//insert nodes into tree --> parent, child
 		tree.setRoot(a);
 		tree.insert(a, b);
