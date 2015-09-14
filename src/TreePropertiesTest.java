@@ -48,7 +48,7 @@ public class TreePropertiesTest {
 		
 	}
 
-	@Test (timeout=1000)
+	@Test //(timeout=1000)
 	public void testHeightLimited() {
 
 		assertEquals(-1, treeEmpty.height(0));
@@ -131,7 +131,8 @@ public class TreePropertiesTest {
 
 	}
 
-	@Test (timeout=1000)
+	@Test //
+	(timeout=1000)
 	public void testIsHeap() {
 		
 		assertTrue(treeEmpty.isHeap(true));
@@ -147,7 +148,7 @@ public class TreePropertiesTest {
 		assertFalse(treePathAbc.isHeap(false));
 	}
 	
-	@Test (timeout=1000)
+	@Test //(timeout=1000)
 	public void testIsBinarySearchTree() {
 
 		assertTrue(treeEmpty.isBinarySearchTree());
