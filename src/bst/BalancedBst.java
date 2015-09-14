@@ -51,14 +51,14 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		
 		//Find the nodes that need restructuring
 		if(node.getLeft() != null || node.getRight() != null){
-			if(node.getChildren().size()>=1){
+			if(node.getLeft() != null || node.getRight() != null){
 				leftSub = 1 + height(node.getLeft()); //+1 to account for root
 			}
 			else{
 				leftSub = 0;
 			}
 			if(node.getLeft() != null && node.getRight() != null){
-				rightSub = 1 + height(node.getRight); //+1 to account for root
+				rightSub = 1 + height(node.getRight()); //+1 to account for root
 			}
 			else{
 				rightSub = 0;
@@ -130,14 +130,14 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		
 		//get left and right children if they exist
 		BstPosition<E> left=null, right=null;
+		BstPosition<E> valuePos = null;
 		left = node.getLeft();
 		right = node.getRight();
 		
 		
 		//Set the value as the root if the tree is empty
-		BstPosition<E> newNode = new BstPosition<E>();
 		if(this.root()==null){
-			this.setRoot(new BstPosition<E>(value));
+			this.setRoot(new SimpleBstPosition<E>(value));
 			return true;
 		}
 		while(true){
@@ -151,8 +151,8 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 				}
 				//If the value is larger than current, insert to the right
 				else if(value.compareTo(node.getElement())>0){
-					this.insert(null, node);
-					this.insert(value, node);
+					this.setLeft(null, node);
+					this.setRight(new SimpleBstPosition<E>(value), node);
 					return true;
 				}		
 			}
@@ -161,7 +161,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			//Insert new node to the left if smaller than current
 			if(value.compareTo(node.getElement())<0){
 				if(left == null){
-					this.insert(value, node);
+					this.setLeft(value);
 					return true;
 				}
 				node = left;	
@@ -171,7 +171,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			//Insert new node to the right if value greater than current
 			else if(value.compareTo(node.getElement())>0){
 				if(right == null){
-					this.insert(node, new SimplePosition<E>(value));
+					this.setRight(value);
 					return true;
 				}
 				node = right;
