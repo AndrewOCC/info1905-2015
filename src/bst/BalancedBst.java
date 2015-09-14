@@ -134,7 +134,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		//Set the value as the root if the tree is empty
 		BstPosition<E> newNode = new BstPosition<E>();
 		if(this.root()==null){
-			this.setRoot(BstPosition<E>(value));
+			this.setRoot(new BstPosition<E>(value));
 			return true;
 		}
 		while(true){
@@ -188,6 +188,9 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		// use the algorithm shown in the week 6 lecture - the BST must remain balanced
 		return false;
 	}
+	
+	
+	
 
 	
 	// Other Functions
