@@ -753,7 +753,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		if (this.isEmpty()){
 			return false;		
 		}
-		//else if (this.)
+		else {
+			return remove(value, this.root());
+		}
 				
 	}
 	
