@@ -1,4 +1,7 @@
 package bst;
+
+import interfaces.Position;
+
 /**
  * This section is for INFO1905 students only.
  * 
@@ -40,12 +43,13 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
         return add;
 	}
 	
-	private void returnTrinodes(Position<E> node){
+	private void returnTrinodes(BstPosition<E> node){
 		int leftSub = 0, rightSub = 0;
+		
 		//Find the nodes that need restructuring
 		if(node.getChildren().size()>0){
 			if(node.getChildren().size()>=1){
-				leftSub = 1 + height(node.getChildren().get(0)); //+1 to account for root
+				leftSub = 1 + height(node.getLeft()); //+1 to account for root
 			}
 			else{
 				leftSub = 0;
@@ -117,11 +121,11 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 	}
 	
 	//Helper function for recursive calls
-	private boolean insert(E value, Position<E> node){
+	private boolean insert(E value, BstPosition<E> node){
 		Position<E> left=null, right=null;
 		//Set the value as the root if the tree is empty
 		if(this.root()==null){
-			this.setRoot(new SimplePosition<E>(value));
+			this.setRoot(new BstPosition<E>(value));
 			return true;
 		}
 		while(true){
@@ -129,8 +133,8 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 			if(node.getChildren().size()==0){
 				//If the value is smaller than current, insert to the left
 				if(value.compareTo(node.getElement())<0){
-					this.insert(node, new SimplePosition<E>(value));
-					this.insert(node, new SimplePosition<E>(null));
+					this.insert(node, new BstPosition<E>(value));
+					this.insert(node, new BstPosition<E>(null));
 					return true;
 				}
 				//If the value is larger than current, insert to the right
@@ -186,7 +190,38 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		return false;
 	}
 
+	
+	public int height(){
+		
+		if (this.isEmpty()){
+			return -1;
+		}
+		
+		return height(this.root());
+		
+	}
+	
+	// Helper function for recursive calls
+	private int height(BstPosition<E> root){
+		int height = 0;
+		
+		// Finds maximum height of children
+		height = height(root.getLeft());
+		int childHeight = height(root.getRight());
+		
+		if (1+childHeight > height){
+			height = 1 + childHeight;
+		}
+		
+		return height;
+		
+	}
+	
+	
 }
 	
+
+
+
 
 	
