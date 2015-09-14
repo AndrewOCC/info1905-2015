@@ -24,14 +24,14 @@ import simpletree.SimplePosition;
 public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 				TreeTraversals<E>,      //PART 1
 				TreeProperties,         //PART 2
-				//Comparable<Tree<E>>,    //PART 3 (only if enrolled in INFO1105)
+				//Comparable<Tree<E>>,	//PART 3 (only if enrolled in INFO1105)
 				BalancedBST<E>,       //PART 3 (only if enrolled in INFO1905)
 				TreeArithmetic          //PART 4
 {
 
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //											PART I	
-//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 	
 	
 	//constructor
@@ -127,9 +127,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
     	return list;
 	}
 	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //									PART II	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 	
 	
 	//Helper function to call recursion
@@ -192,7 +192,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-	// calculate the height of the tree, but do not descend deeper than �depth� edges into the tree
+	// calculate the height of the tree, but do not descend deeper than depth edges into the tree
 	// do not visit any nodes deeper than maxDepth while calculating this
 	// do not call your height() method
 	// (some trees are very, very, very big!) TO DO
@@ -466,13 +466,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return true;	
 	}
 	
-	// is the tree a balanced binary tree?
-	// a balanced tree is one where for every position in the tree, the
-	// subtrees rooted at each of the children of the that position have
-	// heights that differ by no more than one.
-	// NOTE: if a node has only one child, the other child is considered to be a subtree of height ­1
 
-	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 	
 	public boolean isHeap(boolean min){
 	// is the tree a min-heap (if min is True), or is the tree a max-heap (if min is False)
@@ -541,7 +536,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return isHeap;
 	}
 	
-	//––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 	
 	
 	public boolean isBinarySearchTree(){
@@ -600,9 +594,9 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //											PART III	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 
 	public boolean add(E value){
         boolean add = insert(value, this.root());
@@ -690,7 +684,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	private boolean insert(E value, Position<E> node){
 		Position<E> left=null, right=null;
-		//Set the value as the root is tree is empty
+		//Set the value as the root if the tree is empty
 		if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
@@ -749,9 +743,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		}
 	}
 
-    // if value is already in the balanced BST, do nothing and return false
-	// otherwise, add value to the balanced binary search tree (BST) and return true
-	// use the algorithm shown in the week 6 lecture ­ the BST must remain balanced
 
 	@Override
 	public boolean remove(E value) {
@@ -767,11 +758,70 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	}
 	
 	// Helper Function for recursive calls
+	private boolean remove(E value, Position<E> node){
+		Position<E> left=null, right=null;
+		//Set the value as the root if the tree is empty
+		if(this.root()==null){
+			this.setRoot(new SimplePosition<E>(value));
+			return true;
+		}
+		while(true){
+			//If a leaf is reached, return false
+			if(node.getChildren().size()==0){
+				//If the value is smaller than current, insert to the left
+				if(value.compareTo(node.getElement())<0){
+					this.insert(node, new SimplePosition<E>(value));
+					this.insert(node, new SimplePosition<E>(null));
+					return true;
+				}
+				//If the value is larger than current, insert to the right
+				else if(value.compareTo(node.getElement())>0){
+					this.insert(node, new SimplePosition<E>(null));
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}		
+			}
+			
+			//get left and right children if they exist
+			if(node.getChildren().size()==1){
+				left = node.getChildren().get(0);
+				right = null;
+			}
+			else if(node.getChildren().size()==2){
+				left = node.getChildren().get(0);
+				right = node.getChildren().get(1);
+				
+			}
+		
+			//Insert new node to the left if smaller than current
+			if(value.compareTo(node.getElement())<0){
+				if(left == null){
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}
+				node = left;	
+				continue;
+			}
+			
+			//Insert new node to the right if value greater than current
+			else if(value.compareTo(node.getElement())>0){
+				if(right == null){
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}
+				node = right;
+				continue;
+			}
+			//If current is equal to value
+			else{ 
+				return false;
+			}
+		}
+	}
 	
-	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 //											PART IV	
-//–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+//------------------------------------------------------------------------------------
 	
 	// is this tree a valid arithmetic tree
 	// every leaf in an arithmetic tree is a numeric value, for example: “1”, “2.5”, or “­0.234” 
@@ -840,8 +890,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 		
 		// An empty tree results in a zero output
-		if(this.size() == 0){
-			return 0;
+		if(this.isArithmetic() == false){
+			throw new UnsupportedOperationException();
 		}
 		else {
 			return evaluateArithmetic(this.root());

@@ -16,6 +16,7 @@ public class TreeTraversalsTest {
     public ExpectedException exception = ExpectedException.none();
 
 	private MyTree<String> treeLargeUnbalanced;
+	private MyTree<Integer> treeInteger;
 	private MyTree<String> treeNonBinary;
 	private MyTree<String> treePathAbcd;
     
@@ -42,6 +43,15 @@ public class TreeTraversalsTest {
     	treeNonBinary.insert(treeNonBinary.root().getChildren().get(0), new SimplePosition<String>("d"));
     	treeNonBinary.insert(treeNonBinary.root().getChildren().get(0), new SimplePosition<String>("e"));
 
+    	// A tree with integer items
+    	treeInteger= new MyTree<Integer>();
+    	treeInteger.setRoot(new SimplePosition<Integer>(1));
+    	treeInteger.insert(treeInteger.root(), new SimplePosition<Integer>(2));
+    	treeInteger.insert(treeInteger.root(), new SimplePosition<Integer>(3));
+    	treeInteger.insert(treeInteger.root().getChildren().get(0), new SimplePosition<Integer>(4));
+    	treeInteger.insert(treeInteger.root().getChildren().get(0), new SimplePosition<Integer>(5));
+
+    	
     	// A 'path' tree where each element has a single child 
     	treePathAbcd = new MyTree<String>();
     	treePathAbcd.setRoot(new SimplePosition<String>("a"));
@@ -68,7 +78,6 @@ public class TreeTraversalsTest {
 
 		tree.insert(tree.root(), new SimplePosition<String>("b"));
 		assertEquals(Arrays.asList(new String[] {"root", "a", "b"}), tree.preOrder());
-
 		
 		// Test large, unbalanced tree
 		assertEquals(Arrays.asList(new String[] {"a", "b", "d", "f", "g", "h", "e", "c"}), treeLargeUnbalanced.preOrder());
@@ -78,6 +87,9 @@ public class TreeTraversalsTest {
 		
 		// Test a 'path' tree
 		assertEquals(Arrays.asList(new String[] {"a", "b", "c", "d"}), treePathAbcd.preOrder());
+		
+		// Tests a tree of integers (testing type independence)
+		assertEquals(Arrays.asList(new Integer[] {1,2,4,5,3}), treeInteger.preOrder());
 		
 	}
 
@@ -100,13 +112,15 @@ public class TreeTraversalsTest {
 		
 		// Test large, unbalanced tree
 		assertEquals(Arrays.asList(new String[] {"g", "h", "f", "d", "e", "b", "c", "a"}), treeLargeUnbalanced.postOrder());
-				
+		
 		// Test non-binary tree
 		assertEquals(Arrays.asList(new String[] {"c", "d", "e", "b", "a"}), treeNonBinary.postOrder());
 		
 		// Test a 'path' tree
 		assertEquals(Arrays.asList(new String[] {"d", "c", "b", "a"}), treePathAbcd.postOrder());
 		
+		// Tests a tree of integers (testing type independence)
+		assertEquals(Arrays.asList(new Integer[] {4,5,2,3,1}), treeInteger.postOrder());
 
 	}
 	
@@ -147,6 +161,9 @@ public class TreeTraversalsTest {
 		// Test a 'path' tree
 		exception.expect(UnsupportedOperationException.class);
 		treePathAbcd.inOrder();
+		
+		// Tests a tree of integers (testing type independence)
+		assertEquals(Arrays.asList(new Integer[] {4,2,5,3,1}), treeInteger.postOrder());
 		
 
 	}
