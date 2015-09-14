@@ -2,10 +2,15 @@ import simpletree.*;
 
 import static org.junit.Assert.*;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 
 public class TreeArithmeticTest {
+	
+	@Rule
+    public ExpectedException exception = ExpectedException.none();
 	
 
 	@Test (timeout=1000)
@@ -161,6 +166,7 @@ public class TreeArithmeticTest {
 		tree.insert(tree.root(), new SimplePosition<Integer>(19));
 		assertFalse(tree.isArithmetic());
 		assertEquals("", tree.getArithmeticString());
+		exception.expect(UnsupportedOperationException.class);
 		assertEquals(0, tree.evaluateArithmetic(), 0);
 	}
 	
