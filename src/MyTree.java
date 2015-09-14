@@ -600,12 +600,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 
 	public boolean add(E value){
         boolean add = insert(value, this.root());
-<<<<<<< HEAD
+
         if(!this.isBalancedBinary()){
         	//returnTrinodes(this.root());
         }
-=======
->>>>>>> branch 'master' of https://github.com/AndrewOCC/info1905-2015.git
+
         return add;  
 	}
 	

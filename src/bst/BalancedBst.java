@@ -237,7 +237,7 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 
 	
 	//find out if balanced binary tree by comparing height of left and right subtrees
-	public boolean isBalancedBinary(BstPosition<E> node){
+	private boolean isBalancedBinary(BstPosition<E> node){
 		int leftSub, rightSub;
 		if(this.isEmpty()){
 			return isEmpty();
@@ -263,7 +263,6 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		}
 		return true;	
 	}
-
 	
 	
 }
