@@ -605,58 +605,148 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 //–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 	public boolean add(E value){
-        if(this.root()==null){
+        boolean add = insert(value, this.root());
+        if(!this.isBalancedBinary()){
+        	returnTrinodes(this.root());
+        }
+        return add;  
+	}
+	
+	private void returnTrinodes(Position<E> node){
+		int leftSub = 0, rightSub = 0;
+		//Find the nodes that need restructuring
+		if(node.getChildren().size()>0){
+			if(node.getChildren().size()>=1){
+				leftSub = 1 + height(node.getChildren().get(0)); //+1 to account for root
+			}
+			else{
+				leftSub = 0;
+			}
+			if(node.getChildren().size()>1){
+				rightSub = 1 + height(node.getChildren().get(1)); //+1 to account for root
+			}
+			else{
+				rightSub = 0;
+			}
+			//When difference in subtrees is greater than 1
+			//Restructure the nodes in that area
+			System.out.println(Math.abs(leftSub-rightSub));
+			if(Math.abs(leftSub-rightSub)>1){
+				trinodeRestructure(this.root(), this.root().getChildren().get(0),this.root().getChildren().get(1));
+			}
+		}
+	}
+	//node = x, leftChild = y, rightChild = z
+	private void trinodeRestructure(Position<E> node, Position<E> leftChild, Position<E> rightChild ){
+		//temp variables to track children of the new top node
+		Position<E> tempL = null, tempR = null;
+		Position<E> top = null, left = null, right = null;
+		
+		if(node.getElement().compareTo(leftChild.getElement())<0 && leftChild.getElement().compareTo(rightChild.getElement())<0){
+			top = leftChild;
+			left = node;
+			right = rightChild;
+		}
+		if(node.getElement().compareTo(leftChild.getElement())>0 && leftChild.getElement().compareTo(rightChild.getElement())>0){
+			top = leftChild;
+			left = rightChild;
+			right = node;
+		}
+		if(node.getElement().compareTo(rightChild.getElement())<0 && rightChild.getElement().compareTo(leftChild.getElement())<0){
+			top = rightChild;
+			left = node;
+			right = leftChild;
+		}
+		if(node.getElement().compareTo(rightChild.getElement())>0 && rightChild.getElement().compareTo(leftChild.getElement())>0){
+			top = rightChild;
+			left = leftChild;
+			right = node;
+		}
+		//System.out.println(top.getElement());
+		//If our new top position has only one child
+		if(top.getChildren().size()==1){
+			tempL = top.getChildren().get(0);
+			top.removeChild(top.getChildren().get(0));
+		}
+		if(top.getChildren().size()==2){
+			tempL = top.getChildren().get(0);
+			tempR = top.getChildren().get(1);
+			top.removeChild(top.getChildren().get(0));
+			top.removeChild(top.getChildren().get(1));
+		}
+		left.setParent(top);
+		right.setParent(top);
+		top.addChild(left);
+		top.addChild(right);
+		if(tempL != null){
+			insert(tempL.getElement(), top);
+		}
+		if(tempR != null){
+			insert(tempR.getElement(), top);
+		}
+		
+		
+	}
+	
+	private boolean insert(E value, Position<E> node){
+		Position<E> left=null, right=null;
+		//Set the value as the root is tree is empty
+		if(this.root()==null){
 			this.setRoot(new SimplePosition<E>(value));
 			return true;
 		}
-		boolean insert = add(value, this.root());
-		return insert;
-	}
-	
-	public boolean add(E value, Position<E> node){
-		Position<E> left=null, right=null;
+		while(true){
+			//If a leaf is reached, insert the value
+			if(node.getChildren().size()==0){
+				//If the value is smaller than current, insert to the left
+				if(value.compareTo(node.getElement())<0){
+					this.insert(node, new SimplePosition<E>(value));
+					this.insert(node, new SimplePosition<E>(null));
+					return true;
+				}
+				//If the value is larger than current, insert to the right
+				else if(value.compareTo(node.getElement())>0){
+					this.insert(node, new SimplePosition<E>(null));
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}		
+			}
+			
+			//get left and right children if they exist
+			if(node.getChildren().size()==1){
+				left = node.getChildren().get(0);
+				right = null;
+			}
+			else if(node.getChildren().size()==2){
+				left = node.getChildren().get(0);
+				right = node.getChildren().get(1);
+				
+			}
 		
-		if(node.getChildren().size()==0){
+			//Insert new node to the left if smaller than current
 			if(value.compareTo(node.getElement())<0){
-				this.insert(node, new SimplePosition<E>(value));
-				this.insert(node, new SimplePosition<E>(null));
+				if(left == null){
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}
+				node = left;	
+				continue;
 			}
-			else{
-				this.insert(node, new SimplePosition<E>(null));
-				this.insert(node, new SimplePosition<E>(value));
-			}		
-		}
-		
-		//get left and right children if they exist
-		if(node.getChildren().size()==1){
-			left = node.getChildren().get(0);
-			right = null;
-		}
-		else if(node.getChildren().size()==2){
-			left = node.getChildren().get(0);
-			right = node.getChildren().get(1);
-		}
-		
-	
-		if(value.compareTo(node.getElement())<0){//when value less than current
-			if(left == null){
-				this.insert(node, new SimplePosition<E>(value));
-				return true;
+			
+			//Insert new node to the right if value greater than current
+			else if(value.compareTo(node.getElement())>0){
+				if(right == null){
+					this.insert(node, new SimplePosition<E>(value));
+					return true;
+				}
+				node = right;
+				continue;
 			}
-			add(value, left);
-		}
-		else if(node!=null && value.compareTo(node.getElement())>0){//when value greater than current
-			if(right == null){
-				this.insert(node, new SimplePosition<E>(value));
-				return true;
+			//If current is equal to value
+			else{ 
+				return false;
 			}
-			add(value, right);
 		}
-		else{ //if current is equal to value
-			return false;
-		}
-		
-        return false;
 	}
 
     // if value is already in the balanced BST, do nothing and return false

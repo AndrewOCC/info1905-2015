@@ -20,10 +20,11 @@ public class MyTreeTest {
 		Position<Integer> c = new SimplePosition<>(14);
 		Position<Integer> d = new SimplePosition<>(4);
 		//insert nodes into tree --> parent, child
+		tree.setRoot(a);
 		tree.insert(a, b);
 		tree.insert(b, c);
 		tree.insert(b, d);
-		assertEquals(Arrays.asList(5, 10, 14, 4), tree.preOrder(a));	
+		assertEquals(Arrays.asList(5, 10, 14, 4), tree.preOrder());	
 	}
 	
 	@Test
@@ -39,7 +40,7 @@ public class MyTreeTest {
 		tree.insert(a, b);
 		tree.insert(b, c);
 		tree.insert(b, d);
-		assertEquals(Arrays.asList(14, 4, 10, 5), tree.postOrder(a));
+		assertEquals(Arrays.asList(14, 4, 10, 5), tree.postOrder());
 		assertEquals(false, tree.isProperBinary()); //test is proper binary tree
 	}
 	@Test
@@ -65,7 +66,7 @@ public class MyTreeTest {
 		//assertEquals(Arrays.asList(14, 4, 10, 5), tree.postOrder(a));
 		assertEquals(true, tree.isProperBinary()); //test is proper binary tree
 		//System.out.println(tree.isProperBinary());
-		assertEquals(Arrays.asList(1, 4, 8, 10, 7, 5, 14), tree.inOrder(a));
+		assertEquals(Arrays.asList(1, 4, 8, 10, 7, 5, 14), tree.inOrder());
 	}
 	
 	
@@ -79,14 +80,14 @@ public class MyTreeTest {
 		Position<Integer> d = new SimplePosition<>(4);
 		Position<Integer> e = new SimplePosition<>(15);
 		//insert nodes into tree --> parent, child
-		//tree.setRoot(a);
+		tree.setRoot(a);
 		tree.insert(a, b);
 		tree.insert(b, c);
 		tree.insert(b, d);
 		tree.insert(b, e);
-		assertEquals(2, tree.height(a));
-		assertEquals(1, tree.height(1, a));
-		assertEquals(0, tree.height(0,a));
+		assertEquals(2, tree.height());
+		assertEquals(1, tree.height(1));
+		assertEquals(0, tree.height(0));
 		//assertEquals(1, )  // to do! for max depth
 	}
 	
