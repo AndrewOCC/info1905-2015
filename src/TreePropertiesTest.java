@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import interfaces.Position;
 import simpletree.SimplePosition;
 
 public class TreePropertiesTest {
@@ -12,6 +13,11 @@ public class TreePropertiesTest {
 	private MyTree<String> treeBinaryAbc;
 	private MyTree<String> treePathAb;
 	private MyTree<String> treePathAbc;
+	
+	private MyTree<Integer> treeLarge;
+	private MyTree<Integer> treeUnbalanced;
+	private MyTree<String> treeIncomplete;
+	
 	
     @Before
     public void setUp() {
@@ -34,6 +40,35 @@ public class TreePropertiesTest {
     	treePathAbc.setRoot(new SimplePosition<String>("a"));
     	treePathAbc.insert(treePathAbc.root(), new SimplePosition<String>("b"));
     	treePathAbc.insert(treePathAbc.root().getChildren().get(0), new SimplePosition<String>("c"));
+    	
+    	//Testing a large tree with negative values included
+    	treeLarge = new MyTree<Integer>();
+    	treeLarge.setRoot(new SimplePosition<Integer>(46));
+    	treeLarge.insert(treeLarge.root(), new SimplePosition<Integer>(18));
+    	treeLarge.insert(treeLarge.root(), new SimplePosition<Integer>(95));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0), new SimplePosition<Integer>(-5));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0), new SimplePosition<Integer>(21));
+    	treeLarge.insert(treeLarge.root().getChildren().get(1), new SimplePosition<Integer>(35));
+    	treeLarge.insert(treeLarge.root().getChildren().get(1), new SimplePosition<Integer>(70));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0).getChildren().get(0), new SimplePosition<Integer>(96));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0).getChildren().get(1), new SimplePosition<Integer>(200));
+    	
+    	//Tree that is unbalanced and not a binary tree
+    	treeUnbalanced = new MyTree<Integer>();
+    	treeLarge.setRoot(new SimplePosition<Integer>(46));
+    	treeLarge.insert(treeLarge.root(), new SimplePosition<Integer>(30));
+    	treeLarge.insert(treeLarge.root(), new SimplePosition<Integer>(60));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0), new SimplePosition<Integer>(25));
+    	treeLarge.insert(treeLarge.root().getChildren().get(1), new SimplePosition<Integer>(35));
+    	treeLarge.insert(treeLarge.root().getChildren().get(0).getChildren().get(0), new SimplePosition<Integer>(96));
+    	//treeLarge.insert(treeLarge.root().getChildren().get(0).getChildren().get(1).getChildren().get(0), new SimplePosition<Integer>(156));
+    	
+    	//Tree that is incomplete
+    	treeIncomplete = new MyTree<String>();
+    	treeIncomplete.setRoot(new SimplePosition<String>("d"));
+    	treeIncomplete.insert(treeIncomplete.root(), new SimplePosition<String>("s"));
+    	treeIncomplete.insert(treeIncomplete.root(), new SimplePosition<String>("h"));
+    	treeIncomplete.insert(treeIncomplete.root().getChildren().get(1), new SimplePosition<String>("u"));
 
     }
 
@@ -46,6 +81,9 @@ public class TreePropertiesTest {
 		assertEquals(1, treePathAb.height());
 		assertEquals(2, treePathAbc.height());
 		
+		assertEquals(3, treeLarge.height());
+		assertEquals(2, treeIncomplete.height());
+		
 	}
 
 	@Test //(timeout=1000)
@@ -56,6 +94,8 @@ public class TreePropertiesTest {
 		assertEquals(1, treePathAbc.height(1));
 		assertEquals(2, treePathAbc.height(2));
 		assertEquals(2, treePathAbc.height(3));
+		
+		assertEquals(2, treeIncomplete.height(4));
 	}
 
 	@Test (timeout=1000)
@@ -117,6 +157,9 @@ public class TreePropertiesTest {
 		assertTrue(treeBinaryAbc.isCompleteBinary());
 		assertTrue(treePathAb.isCompleteBinary());
 		assertFalse(treePathAbc.isCompleteBinary());
+		
+		assertFalse(treeIncomplete.isCompleteBinary());
+		assertFalse(treeLarge.isCompleteBinary());
 
 	}
 
@@ -128,6 +171,8 @@ public class TreePropertiesTest {
 		assertTrue(treeBinaryAbc.isBalancedBinary());
 		assertTrue(treePathAb.isBalancedBinary());
 		assertFalse(treePathAbc.isBalancedBinary());
+		
+		assertTrue(treeLarge.isBalancedBinary());
 
 	}
 
@@ -146,6 +191,8 @@ public class TreePropertiesTest {
 		assertFalse(treeBinaryAbc.isHeap(false));
 		assertFalse(treePathAb.isHeap(false));
 		assertFalse(treePathAbc.isHeap(false));
+		
+		assertTrue(treeUnbalanced.isHeap(true));
 	}
 	
 	@Test //(timeout=1000)

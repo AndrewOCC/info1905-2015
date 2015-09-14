@@ -10,7 +10,8 @@ import interfaces.Position;
 import simpletree.SimplePosition;
 
 public class BSTtest {
-
+	@Test (timeout=1000)
+	public
 	@Test
 	public void testAdd() {
 		MyTree<Integer> tree = new MyTree<Integer>();
@@ -55,9 +56,7 @@ public class BSTtest {
 		
 		//Check the tree is still balanced
 		assertEquals(true, tree.isBalancedBinary());
-		for(Integer i:tree.inOrder()){
-			System.out.println(i);
-		}
+		
 		
 		//==Object pathTree test==
 		assertEquals(true, pathTree.add("a"));
