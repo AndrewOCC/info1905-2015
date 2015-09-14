@@ -85,11 +85,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	}
 	
 	
-	// Output the values of a in-order traversal of the tree
-	// This operation should only be performed if the tree is a proper binary tree.
-	// If it is not, then throw an UnsupportedOperationException instead of returning a value
-	// Otherwise, perform the traversal with child 0 on the left, and child 1 on the right.
-	
+	// Outputs the results of an in-order traversal of the tree
 	public List<E> inOrder(){
 		if(this.root()==null){
 			return new ArrayList<E>();
@@ -98,6 +94,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return list;
 	}
 	
+	// Primary recursion function
 	private List<E> inOrder(Position<E> root){
 		List<E> list = new ArrayList<E>();
 		
@@ -158,11 +155,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	}
 	
 	
-	// calculate the height of the tree (the maximum depth of any position in the tree.)
-	// a tree with only one position has height 0.
-	// a tree where the root has children, but no grandchildren has height 1.
-	// a tree where the root has grandchildren, but no great-grandchildren has height 2.
 	
+	// Calculates the height of the tree
 	public int height(){
 		
 		if (this.isEmpty()){
@@ -173,7 +167,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
-	// Helper function for recursive calls
+	// Recursive height() function; calculates height of a specific value
 	private int height(Position<E> root){
 		int height = 0;
 		
@@ -192,17 +186,14 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-	// calculate the height of the tree, but do not descend deeper than depth edges into the tree
-	// do not visit any nodes deeper than maxDepth while calculating this
-	// do not call your height() method
-	// (some trees are very, very, very big!) TO DO
-	
+
+	// Calculates the height of the tree, not descending deeper than the parameter maxDepth
 	public int height(int maxDepth){
 		if(isEmpty()){
 			return -1;
 		}
 		
-		// Deals with depth parameters outside the possible depths in the tree
+		// Deals with maxDepth parameters outside the possible depths in the tree
 		if(maxDepth < 0){
 			return 0;
 		}
@@ -211,7 +202,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return height;
 	}
 	
-	// Helper function for recursive calls
+	// Primary recursive function
 	private int height(int maxDepth, int height, Position<E> root){
 		
 		int maxHeight = 0;
@@ -263,9 +254,8 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 	
 	
-	// calculate the number of leaves of the tree at exactly *depth* depth.
-	// the root is at depth 0. The children of the root are at depth 1.
-
+	// Calculates the number of leaves on the tree at exactly *depth* depth
+	// Initiator function for recursion
 	public int numLeaves(int depth){
 		
 		// Deal with empty tree
@@ -283,7 +273,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
-	// Helper function for recursive call
+	// Primary recursive numLeavesDepth function
 	private int numLeavesDepth(Position<E> node, int depth, int currentDepth){
 		
 		int leaves = 0;
@@ -312,9 +302,12 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		return leaves;
 	}
 	
+
 	
-	public int numPositions(int depth){
 	// calculate the number of positions at exactly depth depth.
+	
+	// Initiator function for recursive calls
+	public int numPositions(int depth){
 	
 		// Deal with empty tree
 		if(this.root() == null){
@@ -331,7 +324,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
-	// Helper function for numPositions(int depth)
+	// Recursive function for numPositions(int depth)
 	private int numPositionsDepth(Position<E> node, int depth, int currentDepth){
 		
 		int leaves = 0;
@@ -382,19 +375,19 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	}
 
 	
+	// Calculates whether the tree is a complete binary tree
+	// Initiator function for recursive calls
 	public boolean isCompleteBinary(){
-	// is the tree complete?
-	// a complete tree is one where:
-	// 1) all the levels except the last must be full 
-	// 2) all leaves in the last level are filled from left to right (no gaps)
+	
+		// Check empty cases and invalid inputs
         if(this.isBinary() == false){
 			return false;
 		}
-		
 		if(this.size() == 0){
 			return true;
 		}
 		
+		// Start recursive function
 		else {
 			return isCompleteBinary(this.root(), 0);
 		}
@@ -417,7 +410,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 						currentIndex*2+1+i); 
 				isComplete = (isComplete && isChildComplete);
 				
-				//skips further checks once a false value is found
+				//skips further checks once a false value is found to save time
 				if (isComplete == false){
 					break;
 				}
@@ -591,8 +584,6 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 	
-	
-	
 
 //------------------------------------------------------------------------------------
 //											PART III	
@@ -602,7 +593,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
         boolean add = insert(value, this.root());
 
         if(!this.isBalancedBinary()){
-        	//returnTrinodes(this.root());
+        	returnTrinodes(this.root());
         }
 
         return add;  
@@ -827,12 +818,10 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 //											PART IV	
 //------------------------------------------------------------------------------------
 	
-	// is this tree a valid arithmetic tree
-	// every leaf in an arithmetic tree is a numeric value, for example: “1”, “2.5”, or “­0.234” 
-	// every internal node is a binary operation: “+”, “­”, “*”, “/”
-	// binary operations must act on exactly two sub­expressions (i.e. two children)
-	// note: all the values and operations are stored as String objects
+	// Checks if this tree is a valid arithmetic tree; every leaf must be an arithmetic value,
+	// and all internal nodes must be a binary operation "+", "-", "*", "/"
 	
+	// Initiator function for recursive calls
 	@Override
 	public boolean isArithmetic() {
 		
@@ -844,6 +833,7 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 		
 	}
 		
+	// Recursive function; checks leaves and nodes, ensures nodes have two or zero children
 	private boolean isArithmetic(Position<E> node){
 		
 		boolean isArithmetic = false;
@@ -881,17 +871,10 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 	
 
 
+	// Performs a post-order traversal of the tree to evaluate pairs of leaves
+	// with their parent operators
 	@Override
 	public double evaluateArithmetic() {
-		// Do a post-order traversal of the tree to evaluate pairs of leaves
-		// with their parent operators
-		
-		// evaluate an arithmetic tree to get the solution
-		// if a position is a numeric value, then it has that value
-		// if a position is a binary operation, then apply that operation on the value of it’s children
-		// use floating point maths for all calculations, not integer maths
-		// if a position contains “/”, its left subtree evaluated to 1.0, and the right to 2.0, then it is 0.5
-		
 		
 		// An empty tree results in a zero output
 		if(this.isArithmetic() == false){
@@ -941,9 +924,11 @@ public class MyTree<E extends Comparable<E>> extends SimpleTree<E> implements
 
 	@Override
 	public String getArithmeticString() {
-		
-		return getArithmeticString(this.root());
-		
+		if(this.isArithmetic()){
+			return getArithmeticString(this.root());
+		} else {
+			throw new UnsupportedOperationException();
+		}
 	}
 	
 	private String getArithmeticString(Position<E> node){

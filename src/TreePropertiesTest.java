@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import interfaces.Position;
 import simpletree.SimplePosition;
 
 public class TreePropertiesTest {

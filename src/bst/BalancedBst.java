@@ -1,7 +1,5 @@
 package bst;
 
-import interfaces.Position;
-
 /**
  * This section is for INFO1905 students only.
  * 
@@ -30,15 +28,13 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 	 * these methods are called.
 	 * 
 	 */
-	public boolean add(E value){
-		return true;
-	}
-	
+
 	@Override
 	public boolean insert(E value) {
 		// if value is already in the balanced BST, do nothing and return false
 		// otherwise, add value to the balanced binary search tree (BST) and return true
-		// use the algorithm shown in the week 6 lecture - the BST must remain balanced
+		// use the algorithm shown in the week 6 lecture: the BST must remain balanced
+		
 		boolean add = insert(value, this.root());
         if(!this.isBalancedBinary()){
         	returnTrinodes(this.root());
@@ -77,22 +73,26 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 		BstPosition<E> tempL = null, tempR = null;
 		BstPosition<E> top = null, left = null, right = null;
 		
-		if(node.getElement().compareTo(leftChild.getElement())<0 && leftChild.getElement().compareTo(rightChild.getElement())<0){
+		if(node.getElement().compareTo(leftChild.getElement())<0 && 
+				leftChild.getElement().compareTo(rightChild.getElement())<0){
 			top = leftChild;
 			left = node;
 			right = rightChild;
 		}
-		if(node.getElement().compareTo(leftChild.getElement())>0 && leftChild.getElement().compareTo(rightChild.getElement())>0){
+		if(node.getElement().compareTo(leftChild.getElement())>0 && 
+				leftChild.getElement().compareTo(rightChild.getElement())>0){
 			top = leftChild;
 			left = rightChild;
 			right = node;
 		}
-		if(node.getElement().compareTo(rightChild.getElement())<0 && rightChild.getElement().compareTo(leftChild.getElement())<0){
+		if(node.getElement().compareTo(rightChild.getElement())<0 &&
+				rightChild.getElement().compareTo(leftChild.getElement())<0){
 			top = rightChild;
 			left = node;
 			right = leftChild;
 		}
-		if(node.getElement().compareTo(rightChild.getElement())>0 && rightChild.getElement().compareTo(leftChild.getElement())>0){
+		if(node.getElement().compareTo(rightChild.getElement())>0 &&
+				rightChild.getElement().compareTo(leftChild.getElement())>0){
 			top = rightChild;
 			left = leftChild;
 			right = node;
@@ -190,7 +190,8 @@ public class BalancedBst<E extends Comparable<E>> extends SimpleBst<E>{
 	public boolean remove(E value) {
 		// if value is in the balanced BST, remove it and return true
 		// otherwise, do nothing and return false
-		// use the algorithm shown in the week 6 lecture - the BST must remain balanced
+		// use the algorithm shown in the week 6 lecture: the BST must remain balanced
+		
 		return false;
 	}
 	
